@@ -1,0 +1,32 @@
+image: docker:stable
+
+services:
+  - name: dind:latest
+    alias: docker
+
+stages:
+  - build
+
+variables:
+  BUILD_TAG: "${CI_COMMIT_REF_NAME}"
+
+before_script:
+  - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" "$CI_REGISTRY" --password-stdin
+  - apk add make
+
+build-ansible-images:
+  stage: build
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+      variables:
+        BUILD_TAG: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME-$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+    - if: $CI_COMMIT_REF_PROTECTED
+      variables:
+        BUILD_TAG: $ANSIBLE_VERSION
+  script:
+    - export ANSIBLE_VERSION=${ANSIBLE_VERSION}.*
+    - make target=build docker-build
+    - make target=build docker-push
+  parallel:
+    matrix:
+      - ANSIBLE_VERSION: ['6', '7', '8']

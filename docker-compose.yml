@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  ansible:
+    build:
+      context: ansible
+      args:
+        PYHTON_BASE_IMAGE_VERSION: ${PYHTON_BASE_IMAGE_VERSION:-3.11}
+        ANSIBLE_VERSION: ${ANSIBLE_VERSION:?You should set ANSIBLE_VERSION env variable}
+        ANSIBLE_LINT_VERSION: ${ANSIBLE_LINT_VERSION:-}
+        BUILDKIT_INLINE_CACHE: ${BUILDKIT_INLINE_CACHE:-1}
