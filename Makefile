@@ -15,7 +15,7 @@ docker-down: FORCE ; $(docker-compose) down --remove-orphans
 docker-push: FORCE ; $(docker-compose) push
 docker-pull: FORCE ; $(docker-compose) pull
 docker-logs: FORCE ; $(docker-compose) logs -f
-docker-exec: FORCE ; $(docker-compose) exec $(c) sh
+docker-run: FORCE ; $(docker-compose) run --rm $(container-name-app) sh
 docker-remove-all: FORCE ; $(docker-compose) rm -f -s -v
 
 # Hack

@@ -1,7 +1,7 @@
-image: docker:stable
+image: docker:24
 
 services:
-  - name: dind:latest
+  - name: dind:24
     alias: docker
 
 stages:
@@ -16,13 +16,6 @@ before_script:
 
 build-ansible-images:
   stage: build
-  rules:
-    - if: $CI_MERGE_REQUEST_ID
-      variables:
-        BUILD_TAG: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME-$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
-    - if: $CI_COMMIT_REF_PROTECTED
-      variables:
-        BUILD_TAG: $ANSIBLE_VERSION
   script:
     - export ANSIBLE_VERSION=${ANSIBLE_VERSION}.*
     - make target=build docker-build
