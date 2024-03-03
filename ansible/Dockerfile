@@ -18,6 +18,7 @@ RUN apk --no-cache add \
         tar \
         git \
         yaml-dev \
+        ca-certificates \
         curl
 RUN python -m pip install --upgrade pip --no-cache-dir && \
     apk --no-cache add --virtual .build-deps \
@@ -26,19 +27,17 @@ RUN python -m pip install --upgrade pip --no-cache-dir && \
         openssl-dev \
         build-base && \
     pip3 install --no-cache-dir \
+        ansible==${ANSIBLE_VERSION} \
         dnspython \
         hvac \
         jsondiff \
         netaddr \
         passlib[bcrypt] \
         pexpect \
-        pyOpenSSL && \
-    if [[ -z "${ANSIBLE_VERSION}" ]]; then \
-        pip3 install --no-cache-dir ansible; \
-    else \
-        pip3 install --no-cache-dir ansible==${ANSIBLE_VERSION}; \
-    fi && \
-    if [[ -z "${ANSIBLE_LINT_VERSION}" ]]; then \
+        pyOpenSSL \
+        molecule \
+        molecule-plugins[docker] && \
+    if [ -z "$_ANSIBLE_LINT_VERSION" ]; then \
         pip3 install --no-cache-dir ansible-lint[community,yamllint]; \
     else \
         pip3 install --no-cache-dir ansible-lint[community,yamllint]==${ANSIBLE_LINT_VERSION}; \
