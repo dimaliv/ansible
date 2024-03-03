@@ -22,4 +22,4 @@ build-ansible-images:
     - make target=build docker-push
   parallel:
     matrix:
-      - ANSIBLE_VERSION: ['6', '7', '8']
+      - ANSIBLE_VERSION: ['7', '8', '9']
