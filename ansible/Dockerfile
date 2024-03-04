@@ -35,12 +35,12 @@ RUN python -m pip install --upgrade pip --no-cache-dir && \
         passlib[bcrypt] \
         pexpect \
         pyOpenSSL && \
-    if [ -z "$_ANSIBLE_VERSION" ]; then \
+    if [ -z "$ANSIBLE_VERSION" ]; then \
         pip3 install --no-cache-dir ansible; \
     else \
         pip3 install --no-cache-dir ansible==${ANSIBLE_VERSION}; \
     fi && \
-    if [ -z "$_ANSIBLE_LINT_VERSION" ]; then \
+    if [ -z "$ANSIBLE_LINT_VERSION" ]; then \
         pip3 install --no-cache-dir ansible-lint[community,yamllint]; \
     else \
         pip3 install --no-cache-dir ansible-lint[community,yamllint]==${ANSIBLE_LINT_VERSION}; \
@@ -48,7 +48,7 @@ RUN python -m pip install --upgrade pip --no-cache-dir && \
     apk del .build-deps
 RUN pip3 install --no-cache-dir \
       molecule-plugins[docker] && \
-    if [ -z "$_MOLECULE_VERSION" ]; then \
+    if [ -z "$MOLECULE_VERSION" ]; then \
         pip3 install --no-cache-dir molecule; \
     else \
         pip3 install --no-cache-dir molecule==${MOLECULE_VERSION}; \
