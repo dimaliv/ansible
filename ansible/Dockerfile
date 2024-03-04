@@ -4,6 +4,7 @@ ARG PYHTON_BASE_IMAGE_VERSION
 FROM python:${PYHTON_BASE_IMAGE_VERSION}-alpine
 ARG ANSIBLE_VERSION
 ARG ANSIBLE_LINT_VERSION
+ARG MOLECULE_VERSION
 WORKDIR /ansible
 RUN apk --no-cache add \
         ca-certificates \
@@ -27,20 +28,29 @@ RUN python -m pip install --upgrade pip --no-cache-dir && \
         openssl-dev \
         build-base && \
     pip3 install --no-cache-dir \
-        ansible==${ANSIBLE_VERSION} \
         dnspython \
         hvac \
         jsondiff \
         netaddr \
         passlib[bcrypt] \
         pexpect \
-        pyOpenSSL \
-        molecule \
-        molecule-plugins[docker] && \
+        pyOpenSSL && \
+    if [ -z "$_ANSIBLE_VERSION" ]; then \
+        pip3 install --no-cache-dir ansible; \
+    else \
+        pip3 install --no-cache-dir ansible==${ANSIBLE_VERSION}; \
+    fi && \
     if [ -z "$_ANSIBLE_LINT_VERSION" ]; then \
         pip3 install --no-cache-dir ansible-lint[community,yamllint]; \
     else \
         pip3 install --no-cache-dir ansible-lint[community,yamllint]==${ANSIBLE_LINT_VERSION}; \
     fi && \
     apk del .build-deps
-CMD [ "ansible-playbook", "--version" ]
+RUN pip3 install --no-cache-dir \
+      molecule-plugins[docker] && \
+    if [ -z "$_MOLECULE_VERSION" ]; then \
+        pip3 install --no-cache-dir molecule; \
+    else \
+        pip3 install --no-cache-dir molecule==${MOLECULE_VERSION}; \
+    fi
+CMD [ "ansible-playbook", "--version", "&&", "molecule", "--version" ]
