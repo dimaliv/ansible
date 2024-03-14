@@ -28,6 +28,7 @@ RUN python -m pip install --upgrade pip --no-cache-dir && \
         openssl-dev \
         build-base && \
     pip3 install --no-cache-dir \
+        jmespath \
         dnspython \
         hvac \
         jsondiff \
@@ -53,4 +54,4 @@ RUN pip3 install --no-cache-dir \
     else \
         pip3 install --no-cache-dir molecule==${MOLECULE_VERSION}; \
     fi
-CMD [ "ansible-playbook", "--version", "&&", "molecule", "--version" ]
+CMD [ "ansible-playbook", "--version"]
