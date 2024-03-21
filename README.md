@@ -7,7 +7,7 @@ Production ready Ansible with Molecule docker image based on official [Alpine Py
 Software:
 
 * [Docker](https://www.docker.com/)
-* [GNU Make](https://www.gnu.org/software/make/) - optioanly
+* [GNU Make](https://www.gnu.org/software/make/) - optionally
 
 ## How to build image
 
