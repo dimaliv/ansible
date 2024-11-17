@@ -54,4 +54,4 @@ RUN pip3 install --no-cache-dir \
     else \
         pip3 install --no-cache-dir molecule==${MOLECULE_VERSION}; \
     fi
-CMD [ "ansible-playbook", "--version"]
+CMD ["ansible-playbook", "--version"]
